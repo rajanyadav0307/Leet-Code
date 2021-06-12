@@ -1,0 +1,71 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution 
+{
+public:
+    ListNode* findmiddle(ListNode*head)
+    {
+       
+        ListNode* spointer=head,*fpointer=head;
+        while(fpointer!=NULL && fpointer->next!=NULL)
+        {
+            spointer=spointer->next;
+            fpointer=fpointer->next->next;
+        }
+        return spointer;
+    }
+    
+public:
+    bool isPalindrome(ListNode* head) 
+    {
+        //Check if the head is NULL
+        if(head==NULL)
+            return false;
+        //Single Node is always a palindrome
+        if(head->next==NULL)
+            return true;
+        //Two Nodes if with equal value; return true
+        if(head->next->next==NULL && head->val==head->next->val)
+            return true;
+        //Two nodes if with not equal value,; return false;
+        else if(head->next->next==NULL && head->val!=head->next->val)
+            return false;
+        //For more than 3 nodes, find the middle node, reverse onwards it; check using two pointers
+        ListNode* head1=head;
+        ListNode* head2=findmiddle(head);
+        cout<<head2->val<<endl;
+        ListNode* dump=NULL;
+        
+        while(head2!=NULL)
+        {
+            ListNode* front=head2->next;
+            head2->next=dump;
+            dump=head2;
+            head2=front;
+        }
+        head2=dump;
+      
+        
+        while(head2!=NULL)
+        {
+            if(head1->val!=head2->val)
+                return false;
+            head1=head1->next;
+            head2=head2->next;
+        }
+        
+        return true;
+        
+        
+        
+        
+    }
+};
