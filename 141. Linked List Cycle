@@ -11,16 +11,22 @@ class Solution
 public:
     bool hasCycle(ListNode *head) 
     {
+        //Check if the head is null
         if(head==NULL)
             return false;
+        //Check if the list has single element without loop
         if(head->next==NULL)
             return false;
+        //Check if the list has single element with loop
         if(head->next==head)
             return true;
+        //Check if the list has two elements without loop
         if(head->next->next==NULL)
             return false;
+        //Check if the list has two elements with loop
         if(head->next->next==head)
             return true;
+        //Checking for more than 3 nodes in the list.
         ListNode* spointer=head->next;
         ListNode* fpointer=head->next->next;
         while(fpointer!=NULL && fpointer->next!=NULL)
