@@ -1,0 +1,24 @@
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        System.gc();
+        int length = nums.length;
+
+        if(length ==1 ) {
+            return (nums[0] < target) ? 0 : 1;
+        }
+        int windowSum = 0;
+        int minWindowLength = Integer.MAX_VALUE;
+        for(int i = 0,j=0 ; i < length; i++)
+        {
+            windowSum += nums[i];
+            if( windowSum >= target) {
+                while (windowSum - nums[j] >= target) {
+                    windowSum -= nums[j];
+                    j++;
+                }
+                minWindowLength = Math.min(minWindowLength, i - j + 1);
+            }
+        }
+        return (minWindowLength == Integer.MAX_VALUE) ? 0 : minWindowLength;
+    }
+}
