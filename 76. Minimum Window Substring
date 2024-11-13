@@ -1,0 +1,75 @@
+class Solution {
+    public String minWindow(String s, String t) {
+        System.gc();
+        int sLength = s.length();
+        int tLength = t.length();
+        int tLengthBackUp = tLength;
+
+        if( tLength > sLength)
+            return "";
+
+        if ( sLength == 1 && tLength == 1) {
+            return (t.charAt(0) == s.charAt(0)) ? t : "" ;
+        }
+
+        HashMap<Character, Integer> tStringMap = new HashMap<>();
+        HashMap<Character, Integer> sStringMap = new HashMap<>();
+        HashMap<Character, Integer> tDupMap = new HashMap<>();
+
+        for(int i = 0 ; i < tLength ; i++) {
+            char letter = t.charAt(i);
+            if(!tStringMap.containsKey(letter)){
+                tStringMap.put(letter, 1);
+                tDupMap.put(letter,1);
+            }
+                
+            else{
+                tStringMap.put(letter,tStringMap.get(letter) + 1);
+                tDupMap.put(letter,tDupMap.get(letter) + 1);
+            }
+                
+        }
+        String ans = "";
+        int minLength = Integer.MAX_VALUE;
+        for(int i = 0,j=0; i < sLength ; i++) {
+            char letterS = s.charAt(i);
+            if(tStringMap.containsKey(letterS)) {
+                if(tDupMap.get(letterS) > 0) {
+                    tLength --;
+                    tDupMap.put(letterS, tDupMap.get(letterS) -1);
+                }
+            }
+            if(!sStringMap.containsKey(letterS))
+                sStringMap.put(letterS, 1);
+            else {
+                sStringMap.put(letterS, sStringMap.get(letterS) + 1);
+            }            
+            if(tLength == 0) {
+                while ( j < i) {
+                char headChar = s.charAt(j);
+                if(tStringMap.containsKey(headChar)) {
+                    if(sStringMap.get(headChar) > tStringMap.get(headChar)) {
+                        sStringMap.put(headChar,sStringMap.get(headChar) - 1);
+                        j++;
+                    }
+                       
+                    else
+                        break;
+                }
+                else {
+                    
+                        j++;
+                }
+                }
+                int subStringLength = i-j+1;               
+                if(subStringLength <= minLength && subStringLength >= tLengthBackUp ) {
+                    minLength = subStringLength;
+                    String tempAns = s.substring(j,i+1);
+                    ans = tempAns;
+                }              
+                                
+            }
+        }
+        return ans;
+    }
+}
